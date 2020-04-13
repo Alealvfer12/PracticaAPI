@@ -6,13 +6,13 @@ const ServicioPg = require("../services/postgres");
 let validar = informacion => {
     if (!informacion) {
       throw { ok: false,
-        mensaje: "La información del registro ingresado es obligatoria."};
+        mensaje: "La información del registro ingresado es obligatorio."};
     } else if (!informacion.nombre) {
         throw { ok: false, 
-            mensaje: "El nombre del registro ingresado es obligatoria."};
+            mensaje: "El nombre del registro ingresado es obligatorio."};
       } else if (!informacion.url) {
       throw { ok: false, 
-        mensaje: "la url del registro ingresado es obligatoria."};
+        mensaje: "la url del registro ingresado es obligatorio."};
     } 
   };
 
@@ -21,12 +21,12 @@ let validar = informacion => {
 
   let guardar = async informacion => {
     let _servicio = new ServicioPg();
-    let sql = `INSERT INTO public.informacion(
-                nombre, url, descripcion, )
+    let sql = `INSERT INTO informacion(
+                nombre, url, descripcion)
                 VALUES (
                     '${informacion.nombre}',
                     '${informacion.url}',
-                    '${informacion.descripcion}',`;
+                    '${informacion.descripcion}')`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
   };
@@ -37,7 +37,7 @@ let validar = informacion => {
 
   let consultar = async (informacion) => {
     let _servicio = new ServicioPg();
-    let sql = `SELECT (nombre, url, descripcion) FROM public.informacion where nombre  like '%${registro.nombre}%'`;
+    let sql = `SELECT * FROM informacion `;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
   };

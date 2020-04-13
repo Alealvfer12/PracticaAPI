@@ -19,6 +19,7 @@ router.get("/informacion",async (req, res) => {
   _controlador
 
     .consultar(info_reg)
+    
 
     .then((informacionDB) => {
 
@@ -36,7 +37,7 @@ router.get("/informacion",async (req, res) => {
 
 });
 
-// Guardamos el registro
+//Guardamos el registro
 
 router.post("/informacion", async (req, res) => {
 
@@ -44,12 +45,12 @@ router.post("/informacion", async (req, res) => {
     // valida la info,
     // guardar el registro en la bd
 
-  try {  let info_reg = await req.body;
-    _controlador.validar(info_reg);
+  try {  let info = await req.body;
+   _controlador.validar(info);
     _controlador
-      .guardar(info_reg)
+      .guardar(info)
       .then((informacionDB) => {
-        res.send({ ok: true, mensaje: "Registro ingresado guardado", info: info_reg });
+        res.send({ ok: true, mensaje: "Registro ingresado guardado", info: info });
       })
       .catch((error) => {
         res.send(error);
@@ -58,7 +59,8 @@ router.post("/informacion", async (req, res) => {
     res.send(error);
   }
 
-});
+}); 
+
 
 //Exportacion del router 
 module.exports = router;

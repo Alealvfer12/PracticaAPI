@@ -3,8 +3,14 @@
 const express = require("express");
 
 // Inicializar librería
+
 const app = express();
+
+// poder ejecutar la api y hacer los respectivos llamados
+var cors = require("cors");
+app.use(cors());
 app.use(express.json());
+const router = express.Router();
 
 // Endpoint
 app.get("/", (req, res) => {
@@ -13,11 +19,9 @@ app.get("/", (req, res) => {
 
 // IMPORTAR las rutas con los endpoints especificos
 
-const rutas_personas = require("./routes/personas");
-app.use(rutas_personas);
+const rutasInfo = require("./routes/informacion");
+app.use(rutasInfo);
 
-const rutas_viviendas = require("./routes/viviendas");
-app.use(rutas_viviendas);
 
 // Creacion de puerto
 const port = 3000;

@@ -31,7 +31,7 @@
                 <input type="text" class="form-control" id="descripcionlbl" placeholder="Ingresa Descripcion">
             </div>
 
-            <button type="submit" class="btn btn-primary" onclick="insertarInfo()">Registrar</button>
+            <button type="submit" class="btn btn-primary" onclick="insertar()">Registrar</button>
 
         </form>
     </div>
@@ -43,6 +43,7 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Url</th>
                 <th scope="col">Descripcion</th>
+                <th scope="col"> Eliminar </th>
             </tr>
         </thead>
         <tbody id="lista"></tbody>
@@ -82,37 +83,38 @@
                     data += `<td>${miInfo.nombre}</td>`;
                     data += `<td>${miInfo.url}</td>`;
                     data += `<td>${miInfo.descripcion} </td>`;
-                    data += "</tr>";
-                }
-                lista.innerHTML = data;
-            });
+                    data += '<td><button type="button" onclick="eliminar()" class="btn btn-primary btn-sm">Eliminar</button> </td>';
+                        data += "</tr>";
+                    }
+                    lista.innerHTML = data;
+                });
 
         };
         consultarInfo();
 
         // METODO Insertar Api
 
-        let insertarInfo = () => {
-            let nombreF = document.getElementById("nombrelbl").value;
-            let urlF = document.getElementById("urllbl").value;
-            let descF = document.getElementById("descripcionlbl").value;
-            if (validar(nombreF, urlF)) {
+        let insertar= () => {
+            let nom = document.getElementById("nombrelbl").value;
+            let url = document.getElementById("urllbl").value;
+            let des = document.getElementById("descripcionlbl").value;
+            if (validar(nom, url)) {
                 params = {
-                    nombre: nombreF,
-                    url: urlF,
-                    descripcion: descF,
+                    nombre: nom,
+                    url: url,
+                    descripcion: des,
                 };
                 axios
                     .post("http://localhost:3000/informacion", params)
                     .then((response) => {
-                        console.log("Intento de insert");
+                        console.log("Intento de insertar");
                         console.log(response);
                     });
                 alert("Url registrada")
 
-                nombreF = document.getElementById("nombrelbl").value = "";
-                urlF = document.getElementById("urllbl").value = "";
-                descF = document.getElementById("descripcionlbl").value = "";
+                nom = document.getElementById("nombrelbl").value = "";
+                url = document.getElementById("urllbl").value = "";
+                des = document.getElementById("descripcionlbl").value = "";
             } else {
                 alert("El nombre y la url son obligatorias")
             }
@@ -122,7 +124,6 @@
         //Cuando el campo de la label este vacio, muestra 
 
         let validar = (nombre, url) => {
-
             if (nombre == "") {
                 return false
             } else if (url == "") {
@@ -132,6 +133,21 @@
             }
         }
 
+        // METODO ELIMINAR
+        let eliminar = (id) => {
+            data = {
+                id: id,
+            };
+            axios
+                .delete("http://localhost:3000/informacion", { data })
+                .then((response) => {
+                    console.log("delete");
+                    console.log(response);
+                    consultarInfo();
+                });
+            alert("Registrado eliminado");
+        };
+        consultarInfo();
     </script>
 
 

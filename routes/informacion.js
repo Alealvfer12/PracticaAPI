@@ -1,8 +1,7 @@
 //Importar la libreria express
 const express = require("express");
-
-
 const router = express.Router();
+
 
 //Se importa el controlador
 //realiza las acciones de los registros
@@ -10,7 +9,6 @@ const router = express.Router();
 const _controlador = require("../controllers/informacion");
 
 // Este metodo muestra el resultado del select de la bd
-
 
 router.get("/informacion", async (req, res) => {
     let info_reg = await req.body;
@@ -29,7 +27,7 @@ router.get("/informacion", async (req, res) => {
 
 router.post("/informacion", async (req, res) => {
 
-    // se captura la informacion del registro, 
+    // Se captura la informacion del registro, 
     // valida la info,
     // guardar el registro en la bd
 
@@ -52,6 +50,7 @@ router.post("/informacion", async (req, res) => {
 
 
    //Eliminar
+   
    router.delete("/informacion", async (req, res) => {
     let info_reg = await req.body;
     _controlador
@@ -66,5 +65,6 @@ router.post("/informacion", async (req, res) => {
   
   });
 
-//Exportacion del router 
+//Exportación del router
+
 module.exports = router;

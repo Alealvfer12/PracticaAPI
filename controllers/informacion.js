@@ -1,19 +1,24 @@
 // importar el servicio de postgres
+
 const ServicioPg = require("../services/postgres");
 
 
 // se valida la informacion del registro 
+
 let validar = informacion => {
+
     if (!informacion) {
         throw {
             ok: false,
             mensaje: "La información del registro ingresado es obligatorio."
         };
+
     } else if (!informacion.nombre) {
         throw {
             ok: false,
             mensaje: "El nombre del registro ingresado es obligatorio."
         };
+        
     } else if (!informacion.url) {
         throw {
             ok: false,
@@ -36,7 +41,7 @@ let guardar = async informacion => {
     return respuesta;
 };
 
-// se consultan cada uno de los registros ingrsados, lo cual 
+// Se consultan cada uno de los registros ingrsados, lo cual 
 // no se traen todos los objetos, si no que los tragio por el nombre
 // el metodo debe ser asyncrono para que no devuelva un undefiend
 
@@ -46,7 +51,8 @@ let consultar = async (informacion) => {
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };
-// se eliminan cada uno de los registros ingresados 
+
+// Se eliminan cada uno de los registros ingresados 
 // por url 
 
 let eliminar = async (toDelete) => {

@@ -11,30 +11,31 @@
 
 <body>
 
-
-
     <div class="card" style="margin-left: 300px; margin-right: 300px; margin: 50xp;">
-        <form>
+        <div class="card-body">
+            <form>
 
-            <div class="form-group">
-                <label for="exampleInputEmail1">Nombre</label>
-                <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp"
-                    placeholder="Ingresa nombre de la API">
-                <small id="nombrelbl" class="form-text text-muted"></small>
-            </div>
-            <div class="form-group">
-                <label for="url">Url</label>
-                <input type="text" class="form-control" id="urllbl" placeholder="Ingresa url">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Descripcion</label>
-                <input type="text" class="form-control" id="descripcionlbl" placeholder="Ingresa Descripcion">
-            </div>
+                <div class="form-group">
+                    <label for="txtNombre">Nombre </label>
+                    <input type="text" class="form-control" id="nombrelbl" />
+                </div>
 
-            <button type="submit" class="btn btn-primary" onclick="insertar()">Registrar</button>
+                <div class="form-group">
+                    <label for="txtUrl">Url</label>
+                    <input type="text" class="form-control" id="urllbl" />
+                </div>
 
-        </form>
+                <div class="form-group">
+                    <label for="txtDescripcion">Descripción</label>
+                    <input type="text" class="form-control" id="descripcionlbl" />
+                </div>
+
+                <button type="submit" class="btn btn-primary" onclick="insertar()">Insertar </button>
+
+            </form>
+        </div>
     </div>
+
     <br> <br>
 
     <table class="table" id="tb">
@@ -52,9 +53,11 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
@@ -63,38 +66,10 @@
 
     <script>
 
-        var data = [];
-        let consultarInfo = () => {
-            // invorar el metodo get de axios
-            axios.get("http://localhost:3000/informacion").then((response) => {
-                console.log("Respuesta de la api");
-                console.log(response);
-                // datos que me sirven para poder traer el contenido
-                informacion = response.data.info;
-                console.log(informacion)
-                let lista = document.getElementById("lista");
-                let data = "";
-
-                for (let i = 0; i < informacion.length; i++) {
-                    let miInfo = ""
-                    miInfo = informacion[i];
-
-                    data += "<tr>";
-                    data += `<td>${miInfo.nombre}</td>`;
-                    data += `<td>${miInfo.url}</td>`;
-                    data += `<td>${miInfo.descripcion} </td>`;
-                    data += '<td><button type="button" onclick="eliminar()" class="btn btn-primary btn-sm">Eliminar</button> </td>';
-                        data += "</tr>";
-                    }
-                    lista.innerHTML = data;
-                });
-
-        };
-        consultarInfo();
 
         // METODO Insertar Api
 
-        let insertar= () => {
+        let insertar = () => {
             let nom = document.getElementById("nombrelbl").value;
             let url = document.getElementById("urllbl").value;
             let des = document.getElementById("descripcionlbl").value;
@@ -111,7 +86,6 @@
                         console.log(response);
                     });
                 alert("Url registrada")
-
                 nom = document.getElementById("nombrelbl").value = "";
                 url = document.getElementById("urllbl").value = "";
                 des = document.getElementById("descripcionlbl").value = "";
@@ -119,6 +93,7 @@
                 alert("El nombre y la url son obligatorias")
             }
         };
+
 
         //METODO validar 
         //Cuando el campo de la label este vacio, muestra 
@@ -133,24 +108,55 @@
             }
         }
 
+
+        // METODO consultar
+
+        var data = [];
+        let consultarInfo = () => {
+
+            // invocar el metodo get de axios
+
+            axios.get("http://localhost:3000/informacion").then((response) => {
+                console.log("Respuesta de la api");
+                console.log(response);
+
+                // datos que me sirven para poder traer el contenido
+
+                informacion = response.data.info;
+                console.log(informacion)
+                let lista = document.getElementById("lista");
+                let data = "";
+
+                for (let i = 0; i < informacion.length; i++) {
+                    let miInfo = ""
+                    miInfo = informacion[i];
+                    data += "<tr>";
+                    data += `<td>${miInfo.nombre}</td>`;
+                    data += `<td>${miInfo.url}</td>`;
+                    data += `<td>${miInfo.descripcion} </td>`;
+                    data += '<td><button type="button" onclick="eliminar('+informacion[i].id +')" class="btn btn-primary btn-sm">Eliminar</button> </td>';
+                    data += "</tr>";
+                }
+                lista.innerHTML = data;
+            });
+
+        };
+        consultarInfo();
+
+
         // METODO ELIMINAR
+
         let eliminar = (id) => {
             data = {
                 id: id,
             };
-            axios
-                .delete("http://localhost:3000/informacion", { data })
-                .then((response) => {
-                    console.log("delete");
-                    console.log(response);
-                    consultarInfo();
-                });
+            axios.delete("http://localhost:3000/informacion", { data }).then((response) => {
+                consultarInfo();
+            });
             alert("Registrado eliminado");
         };
         consultarInfo();
     </script>
-
-
 
 </body>
 
